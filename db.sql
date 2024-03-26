@@ -32,6 +32,9 @@ CREATE TABLE blogtags (
   FOREIGN KEY (tag_id) REFERENCES tags(id)
 );
 
+	GRANT ALL PRIVILEGES ON blog.* TO 'labs'@'localhost';
+	FLUSH PRIVILEGES;
+
 
 INSERT INTO authors(name, email) VALUES
 ('Chris Mendenhall', 'chrismendenhall1246@gmail.com'),
