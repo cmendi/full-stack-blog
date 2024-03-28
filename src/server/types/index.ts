@@ -1,9 +1,9 @@
-export interface IBaseAuthor {
+export interface IBaseAuthors {
 	name: string;
 	email: string;
 }
 
-export interface IAuthor extends IBaseAuthor {
+export interface IAuthors extends IBaseAuthors {
 	id: number;
 	created_at: Date;
 }
@@ -19,8 +19,10 @@ export interface IBlogs extends IBaseBlogs {
 	created_at: Date;
 }
 
-export interface Itag {
+export interface Itags {
 	id: number;
+}
+export interface IBaseTags {
 	name: string;
 }
 
