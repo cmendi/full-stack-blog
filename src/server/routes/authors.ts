@@ -7,7 +7,7 @@ const authorsRouter = express.Router();
 authorsRouter.get("/", async (req, res) => {
 	try {
 		const authors = await db.authors.getAll();
-		return res.json(authors);
+		res.json(authors);
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ message: "Error could not recieve all authors!" });
