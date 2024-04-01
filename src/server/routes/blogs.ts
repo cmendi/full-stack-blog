@@ -57,6 +57,40 @@ blogsRouter.post("/", async (req, res) => {
 	}
 });
 
+//Update blog
+blogsRouter.put("/:id", async (req, res) => {
+	const { title, content } = req.body;
+	const id = parseInt(req.params.id);
+
+	try {
+		const updateBlog: IBaseBlogs = {
+			title,
+			content,
+			author_id: 1,
+		};
+		await db.blogs.update(updateBlog, id);
+		res.status(200).json({ message: "Successfully updated blog." });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: "Cannot updated blog at this time" });
+	}
+});
+
 //Delete blog
+blogsRouter.delete("/:id", async (req, res) => {
+	const id = parseInt(req.params.id);
+
+	if (!id || id < 1) {
+		return res.status(500).json({ message: "Id must be a positive integar." });
+	}
+
+	try {
+		await db.blogs.destroy(id);
+		res.status(200).json({ message: `Successfully deleted blog with the id of ${id}` });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: "Cannot delete blog at this time." });
+	}
+});
 
 export default blogsRouter;

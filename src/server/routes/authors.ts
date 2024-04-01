@@ -46,4 +46,21 @@ authorsRouter.post("/", async (req, res) => {
 	}
 });
 
+// Delete Author
+authorsRouter.delete("/:id", async (req, res) => {
+	const id = parseInt(req.params.id);
+
+	if (!id || id < 1) {
+		return res.status(500).json({ message: "Id must be a positive integar." });
+	}
+
+	try {
+		await db.authors.destroy(id);
+		res.status(200).json({ message: `Successfully deleted author with the id of ${id}` });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: "Cannot delete author at this time" });
+	}
+});
+
 export default authorsRouter;
