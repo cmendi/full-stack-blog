@@ -4,24 +4,15 @@ import { IBlogTags } from "../types";
 
 const blogTagsRouter = express.Router();
 
-// Create blogtag
-blogTagsRouter.post("/", async (req, res) => {
-	const { blog_id, tag_id } = req.body;
+// Get all blogtags
+blogTagsRouter.get("/", async (req, res) => {
 	try {
-		const newblogTag: IBlogTags = {
-			blog_id,
-			tag_id,
-		};
-
-		const blogTag = await db.blogtags.create(newblogTag);
-		const blogTagId = blogTag.insertId;
-		res.status(200).json({ message: `Successfully created blogtag!`, id: blogTagId });
+		const results = await db.blogtags.getAll();
+		res.json(results);
 	} catch (error) {
 		console.log(error);
-		res.status(500).json({ message: "Cannot create blogtag at this time" });
+		res.status(500).json({ message: "Cannot receive blogtags at this time" });
 	}
 });
-
-//Delete blogtag
 
 export default blogTagsRouter;

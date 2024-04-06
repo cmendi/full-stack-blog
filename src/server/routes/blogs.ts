@@ -30,7 +30,7 @@ blogsRouter.get("/:id", async (req, res) => {
 
 // Create blog
 blogsRouter.post("/", async (req, res) => {
-	const { title, content } = req.body;
+	const { title, content, tag_ids } = req.body;
 
 	if (!title || typeof title !== "string" || title.length > 150) {
 		return res.status(400).json({ message: "Title must be a string no longer than 150 characters" });
@@ -50,6 +50,12 @@ blogsRouter.post("/", async (req, res) => {
 		const blog = await db.blogs.create(newBlog);
 		const blog_id = blog.insertId;
 
+		if (tag_ids || Array.isArray(tag_ids)) {
+			for await (const tag_id of tag_ids) {
+				await db.blogtags.create({ tag_id, blog_id });
+			}
+		}
+
 		res.status(201).json({ message: "Successfully created blog!", id: blog_id });
 	} catch (error) {
 		console.log(error);
@@ -59,7 +65,7 @@ blogsRouter.post("/", async (req, res) => {
 
 //Update blog
 blogsRouter.put("/:id", async (req, res) => {
-	const { title, content } = req.body;
+	const { title, content, tag_ids } = req.body;
 	const id = parseInt(req.params.id);
 
 	try {
@@ -68,6 +74,14 @@ blogsRouter.put("/:id", async (req, res) => {
 			content,
 			author_id: 1,
 		};
+
+		if (tag_ids || Array.isArray(tag_ids)) {
+			await db.blogtags.destroy_by("blog_id", id);
+			for await (const tag_id of tag_ids) {
+				await db.blogtags.create({ tag_id, blog_id: id });
+			}
+		}
+
 		await db.blogs.update(updateBlog, id);
 		res.status(200).json({ message: "Successfully updated blog." });
 	} catch (error) {
@@ -85,6 +99,7 @@ blogsRouter.delete("/:id", async (req, res) => {
 	}
 
 	try {
+		await db.blogtags.destroy_by("blog_id", id);
 		await db.blogs.destroy(id);
 		res.status(200).json({ message: `Successfully deleted blog with the id of ${id}` });
 	} catch (error) {

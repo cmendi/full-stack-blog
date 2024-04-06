@@ -46,6 +46,7 @@ tagsRouter.delete("/:id", async (req, res) => {
 	}
 
 	try {
+		await db.blogtags.destroy_by("tag_id", id);
 		await db.tags.destroy(id);
 		res.status(200).json({ message: `Successfully deleted tag with id of ${id}` });
 	} catch (error) {
