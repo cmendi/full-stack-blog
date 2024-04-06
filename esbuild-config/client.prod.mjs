@@ -10,7 +10,8 @@ try {
         minify: true,
         outfile: 'public/static/bundle.js',
         define: {
-            'process.env.NODE_ENV': "'production'"
+            'process.env.NODE_ENV': "'production'",
+            "process.env.SERVER_URL": "''",
         },
         plugins: [
             sassPlugin({

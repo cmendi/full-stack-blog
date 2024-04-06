@@ -13,7 +13,8 @@ try {
 		outfile: 'public/static/bundle.js',
 		plugins: [sassPlugin({ type: 'style', logger: sass.Logger.silent, quietDeps: true })],
 		define: {
-			'process.env.NODE_ENV': "'development'"
+			'process.env.NODE_ENV': "'development'",
+			"process.env.SERVER_URL": "'http://localhost:3000'",
 		}
 	});
 
