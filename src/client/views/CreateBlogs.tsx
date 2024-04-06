@@ -20,8 +20,10 @@ const CreateBlogs = () => {
 	}, []);
 
 	return (
-		<div className="mx-auto mt-5 w-25">
-			<Select value={tags} onChange={setTags} options={options} isMulti className="basic-multi-select" classNamePrefix="select" />
+		<div className="row justify-content-center">
+			<div className="col-8">
+				<Select value={tags} onChange={setTags} options={options} isMulti className="basic-multi-select shadow-sm" classNamePrefix="select" />
+			</div>
 		</div>
 	);
 };
