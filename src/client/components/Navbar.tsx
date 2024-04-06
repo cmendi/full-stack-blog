@@ -23,13 +23,13 @@ const Navbar = () => {
 
 			<div className={`collapse navbar-collapse ${isCollapsed ? "collapse-transition" : "show collapse-transition"}`}>
 				<div className="navbar-nav">
-					<Link to={"/"} onClick={handleNavLinkClick} className="text-dark nav-link m-2 fw-bold">
+					<Link to={"/"} onClick={handleNavLinkClick} className="text-center text-dark nav-link m-2 fw-bold">
 						Home
 					</Link>
-					<Link to={"/blogs/new"} onClick={handleNavLinkClick} className="text-info text-nowrap nav-link m-2 fw-bold">
-						Create Chirps
+					<Link to={"/blogs/new"} onClick={handleNavLinkClick} className="text-center text-info text-nowrap nav-link m-2 fw-bold">
+						Create Blogs
 					</Link>
-					<Link to={"/"} onClick={handleNavLinkClick} className="text-info nav-link m-2 fw-bold">
+					<Link to={"/"} onClick={handleNavLinkClick} className="text-center text-info nav-link m-2 fw-bold">
 						Admin
 					</Link>
 				</div>
