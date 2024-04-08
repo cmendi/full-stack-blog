@@ -18,3 +18,8 @@ export interface Iauthors {
 	name: string;
 	email: string;
 }
+
+export interface IblogTags {
+	blog_id: number;
+	tag_id: number;
+}
