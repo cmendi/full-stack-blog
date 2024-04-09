@@ -7,28 +7,25 @@ const Home = () => {
 	const [authors, setAuthors] = useState<Iauthors[]>([]);
 	const [blogTags, setBlogTags] = useState<IblogTags[]>([]);
 	const [tags, setTags] = useState<Itags[]>([]);
+	const [expandedBlogs, setExpandedBlogs] = useState<{ [key: number]: boolean }>({});
 
+	const previewLength = 250;
+
+	// Fetching content
 	useEffect(() => {
 		GET("/api/blogs").then(setBlogs);
-	}, []);
-
-	useEffect(() => {
 		GET("/api/authors").then(setAuthors);
-	}, []);
-
-	useEffect(() => {
 		GET("/api/blogtags").then(setBlogTags);
-	}, []);
-
-	useEffect(() => {
 		GET("/api/tags").then(setTags);
 	}, []);
 
+	// Display Author who wrote the blog.
 	const getAuthor = (authorId: number) => {
 		const author = authors.find((author) => author.id === authorId);
 		return author ? author.name : "uknown";
 	};
 
+	// Display Tags.
 	const getTags = (blogId: number) => {
 		const blogTag = blogTags.filter((blogTag) => blogTag.blog_id === blogId);
 		const tagsForBlog: JSX.Element[] = [];
@@ -36,36 +33,55 @@ const Home = () => {
 			const tagObject = tags.find((t) => t.id === tag.tag_id);
 			if (tagObject) {
 				tagsForBlog.push(
-					<span key={`tag-object-${tagObject.id}`} className="bg-info rounded-pill p-2 m-2 fw-bold">
+					<span key={`tag-object-${tagObject.id}`} className="bg-light shadow shadow-sm rounded-pill p-2 m-2 fw-bold">
 						{tagObject.name}
 					</span>
 				);
 			}
 		});
 
-		// TODO:
-		// Need to add space in between tags.
 		return tagsForBlog;
 	};
 
+	// Toggle read more for a specific blog
+	const toggleReadMore = (blogId: number) => {
+		setExpandedBlogs((prev) => ({
+			...prev,
+			[blogId]: !prev[blogId],
+		}));
+	};
+
 	return (
-		<div className="row justify-content-center mt-5">
-			<div className="container row justify-content-center">
-				{blogs.map((blog) => (
-					<div className="col-12 col-md-12" key={`blog-card-${blog.id}`}>
-						<div className="card m-4 shadow shadow-sm">
-							<div className="card-body p-4">
-								<h2 className="card-title m-4">{blog.title}</h2>
-								<p className="card-text m-4">{blog.content}</p>
-								<h6 className="card-subtitle mb-2 text-muted m-4">Author: {getAuthor(blog.author_id)}</h6>
-								<div className="card-subtitle mb-2 text-muted m-4">Tags: {getTags(blog.id)}</div>
-								<button className="btn btn-danger m-4 fw-bold">Edit blog</button>
+		<>
+			<img className="w-100" src="/assets/MainPhoto.png" alt="golf image" />
+			<div className="container">
+				<div className="row justify-content-center">
+					<div className="d-flex justify-content-center mt-5">
+						<h1 className="fw-bold">Blog Posts</h1>
+					</div>
+					{blogs.map((blog) => (
+						<div className="col-12 col-md-7" key={`blog-card-${blog.id}`}>
+							<div className="card m-4 shadow shadow-sm">
+								<div className="card-body p-4">
+									<h2 className="card-title fw-bold m-4">{blog.title}</h2>
+									<div className="card-text m-4">
+										{expandedBlogs[blog.id] || blog.content.length <= previewLength
+											? blog.content.split("\n").map((paragraph, index) => <p key={index}>{paragraph}</p>)
+											: `${blog.content.substring(0, previewLength)}... `}
+										<a className="pe-auto text-decoration-none" onClick={() => toggleReadMore(blog.id)}>
+											{expandedBlogs[blog.id] ? " read less" : " read more"}
+										</a>
+									</div>
+									<h6 className="card-subtitle mb-2 text-muted m-4">Author: {getAuthor(blog.author_id)}</h6>
+									<div className="card-subtitle mb-2 text-muted m-4 d-flex flex-wrap align-items-center">Tags: {getTags(blog.id)}</div>
+									<button className="btn btn-info m-4 fw-bold">Details</button>
+								</div>
 							</div>
 						</div>
-					</div>
-				))}
+					))}
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

@@ -8,7 +8,7 @@ $success: #00f764;        // Neon Green
 $info: #0fc159;           // Bright Cyan
 $warning: #ff61a6;        // Pinkish
 $danger: #ff0000;         // Neon Red
-$light: #9A83D4;          // Pastel Purple
+$light: #eae7e7;          // Pastel Purple
 $dark: #000000;           // Dark Blueish Purple
 
 // Link Colors
@@ -16,6 +16,10 @@ $link-color: #01cdfe;     // Bright Cyan
 $link-hover-color: darken($link-color, 10%);
 
 $font-family-base: "Poppins", sans-serif;
+
+.pe-auto {
+   cursor: pointer;
+}
 
 .main {
    background-color: #ffffff;
