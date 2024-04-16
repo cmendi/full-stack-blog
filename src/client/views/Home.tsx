@@ -68,11 +68,13 @@ const Home = () => {
 										{expandedBlogs[blog.id] || blog.content.length <= previewLength
 											? blog.content.split("\n").map((paragraph, index) => <p key={index}>{paragraph}</p>)
 											: `${blog.content.substring(0, previewLength)}... `}
-										<a className="pe-auto text-decoration-none" onClick={() => toggleReadMore(blog.id)}>
+										<a className="text-decoration-none" onClick={() => toggleReadMore(blog.id)}>
 											{expandedBlogs[blog.id] ? " read less" : " read more"}
 										</a>
 									</div>
-									<h6 className="card-subtitle mb-2 text-muted m-4">Author: {getAuthor(blog.author_id)}</h6>
+									<h6 className="card-subtitle mb-2 text-muted m-4">
+										by {getAuthor(blog.author_id)} on {new Date(blog.created_at).toLocaleString()}
+									</h6>
 									<div className="card-subtitle mb-2 text-muted m-4 d-flex flex-wrap align-items-center">Tags: {getTags(blog.id)}</div>
 									<button className="btn btn-info m-4 fw-bold">Details</button>
 								</div>
