@@ -33,7 +33,7 @@ const Home = () => {
 			const tagObject = tags.find((t) => t.id === tag.tag_id);
 			if (tagObject) {
 				tagsForBlog.push(
-					<span key={`tag-object-${tagObject.id}`} className="bg-light shadow shadow-sm rounded-pill p-2 m-2 fw-bold">
+					<span key={`tag-object-${tagObject.id}`} className="bg-info shadow shadow-sm rounded-pill p-2 m-2 fw-bold">
 						{tagObject.name}
 					</span>
 				);
@@ -55,12 +55,10 @@ const Home = () => {
 		<>
 			<img className="w-100" src="/assets/MainPhoto.png" alt="golf image" />
 			<div className="container">
-				<div className="row justify-content-center">
-					<div className="d-flex justify-content-center mt-5">
-						<h1 className="fw-bold">Blog Posts</h1>
-					</div>
+				<h1 className="my-5 fw-bold text-center">Blog Posts</h1>
+				<div className="row">
 					{blogs.map((blog) => (
-						<div className="col-12 col-md-7" key={`blog-card-${blog.id}`}>
+						<div className="col-12 col-md-6 mb-4" key={`blog-card-${blog.id}`}>
 							<div className="card m-4 shadow shadow-sm">
 								<div className="card-body p-4">
 									<h2 className="card-title fw-bold m-4">{blog.title}</h2>
@@ -68,7 +66,7 @@ const Home = () => {
 										{expandedBlogs[blog.id] || blog.content.length <= previewLength
 											? blog.content.split("\n").map((paragraph, index) => <p key={index}>{paragraph}</p>)
 											: `${blog.content.substring(0, previewLength)}... `}
-										<a className="text-decoration-none" onClick={() => toggleReadMore(blog.id)}>
+										<a className="text-decoration-none pe-auto" onClick={() => toggleReadMore(blog.id)}>
 											{expandedBlogs[blog.id] ? " read less" : " read more"}
 										</a>
 									</div>
@@ -76,7 +74,6 @@ const Home = () => {
 										by {getAuthor(blog.author_id)} on {new Date(blog.created_at).toLocaleString()}
 									</h6>
 									<div className="card-subtitle mb-2 text-muted m-4 d-flex flex-wrap align-items-center">Tags: {getTags(blog.id)}</div>
-									<button className="btn btn-info m-4 fw-bold">Details</button>
 								</div>
 							</div>
 						</div>
