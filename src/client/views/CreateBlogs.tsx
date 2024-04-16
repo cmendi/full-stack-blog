@@ -25,17 +25,23 @@ const CreateBlogs = () => {
 				<h1 className="my-5 fw-bold text-center">Create Blog</h1>
 				<div className="col-12 col-md-6">
 					<div className="mb-3">
-						<label htmlFor="title" className="form-label">
+						<label htmlFor="title" className="form-label fw-bold">
 							Title
 						</label>
-						<input className="form-control" />
+						<input className="form-control" required />
 					</div>
-					<Select value={tags} onChange={setTags} options={options} isMulti className="basic-multi-select shadow-sm mb-3" classNamePrefix="select" />
 					<div className="mb-3">
-						<label htmlFor="content" className="form-label">
+						<label htmlFor="title" className="form-label fw-bold">
+							Tags
+						</label>
+
+						<Select value={tags} onChange={setTags} options={options} isMulti className="basic-multi-select mb-3" classNamePrefix="select" required />
+					</div>
+					<div className="mb-3">
+						<label htmlFor="content" className="form-label fw-bold">
 							Content
 						</label>
-						<textarea className="form-control"></textarea>
+						<textarea className="form-control" required></textarea>
 					</div>
 					<button type="submit" className="btn btn-info">
 						Submit
