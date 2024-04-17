@@ -20,7 +20,7 @@ blogsRouter.get("/:id", async (req, res) => {
 	const id = parseInt(req.params.id);
 
 	try {
-		const blog = await db.blogs.getOne(id);
+		const [blog] = await db.blogs.getOne(id);
 		res.json(blog);
 	} catch (error) {
 		console.log(error);

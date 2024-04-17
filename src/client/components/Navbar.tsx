@@ -28,7 +28,7 @@ const Navbar = () => {
 						<Link to={"/blogs/new"} onClick={handleNavLinkClick} className="text-center text-info text-nowrap nav-link m-2 fw-bold">
 							Create Blogs
 						</Link>
-						<Link to={"/"} onClick={handleNavLinkClick} className="text-center text-info nav-link m-2 fw-bold">
+						<Link to={"/admin"} onClick={handleNavLinkClick} className="text-center text-info nav-link m-2 fw-bold">
 							Admin
 						</Link>
 					</div>

@@ -36,6 +36,13 @@ $font-family-base: "Poppins", sans-serif;
    justify-content: flex-end;
 }
 
+.large-textarea {
+   height: 100vh;
+   min-height: 100px;
+   max-height: 500px;
+}
+
+
 .social-icon {
    padding-right: 10px;
 }

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Iauthors, Iblogs, IblogTags, Itags } from "../types";
-import { GET } from "../services/fetchHelper";
+import { DELETE, GET } from "../services/fetchHelper";
 import { Link } from "react-router-dom";
 
-const Home = () => {
+const Admin = () => {
 	const [blogs, setBlogs] = useState<Iblogs[]>([]);
 	const [authors, setAuthors] = useState<Iauthors[]>([]);
 	const [blogTags, setBlogTags] = useState<IblogTags[]>([]);
@@ -12,9 +12,13 @@ const Home = () => {
 
 	const previewLength = 250;
 
+	const loadBlogs = () => {
+		return GET("/api/blogs").then(setBlogs);
+	};
+
 	// Fetching content
 	useEffect(() => {
-		GET("/api/blogs").then(setBlogs);
+		loadBlogs();
 		GET("/api/authors").then(setAuthors);
 		GET("/api/blogtags").then(setBlogTags);
 		GET("/api/tags").then(setTags);
@@ -52,11 +56,14 @@ const Home = () => {
 		}));
 	};
 
+	const deleteBlog = (id: number) => {
+		DELETE(`/api/blogs/${id}`).then(loadBlogs);
+	};
+
 	return (
 		<>
-			<img className="w-100" src="/assets/MainPhoto.png" alt="golf image" />
 			<div className="container">
-				<h1 className="my-5 fw-bold text-center">Blog Posts</h1>
+				<h1 className="my-5 fw-bold text-center">Admin Panel</h1>
 				<div className="row">
 					{blogs.map((blog) => (
 						<div className="col-12 col-md-6 mb-4" key={`blog-card-${blog.id}`}>
@@ -75,7 +82,10 @@ const Home = () => {
 										by {getAuthor(blog.author_id)} on {new Date(blog.created_at).toLocaleString()}
 									</h6>
 									<div className="card-subtitle mb-2 m-4 d-flex flex-wrap align-items-center">Tags: {getTags(blog.id)}</div>
-									<Link to={`/blogs/${blog.id}/edit`} className="btn btn-info m-4 fw-bold">
+									<button onClick={() => deleteBlog(blog.id)} className="btn btn-danger m-4 fw-bold">
+										Delete
+									</button>
+									<Link className="btn btn-info fw-bold" to={`/blogs/${blog.id}/edit`}>
 										Edit
 									</Link>
 								</div>
@@ -88,4 +98,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default Admin;
