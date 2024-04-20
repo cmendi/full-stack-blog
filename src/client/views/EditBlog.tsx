@@ -1,32 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { GET } from "../services/fetchHelper";
+import { GET, DELETE } from "../services/fetchHelper";
 import Select, { MultiValue } from "react-select";
-import type { IblogTags, Itags } from "../types";
-import { useParams } from "react-router-dom";
+import makeAnimated from "react-select/animated";
+import { useParams, useNavigate } from "react-router-dom";
+import { Itags, Iblogs } from "../types";
 
-interface Option {
-	value: number;
-	label: string;
-}
+interface Option {}
 
 const EditBlog = () => {
-	const { id } = useParams();
+	const { id } = useParams<{ id: string }>();
 	const [tags, setTags] = useState<MultiValue<Option>>([]);
 	const [options, setOptions] = useState<MultiValue<Option>>([]);
-	const [blogTags, setBlogTags] = useState<IblogTags[]>([]);
 	const [content, setContent] = useState("");
 	const [title, setTitle] = useState("");
 
+	const animatedComponents = makeAnimated();
+	const nav = useNavigate();
+
 	useEffect(() => {
-		GET("/api/blogtags").then(setBlogTags);
-		GET(`/api/blogs/${id}`).then((blog) => {
+		GET(`/api/blogs/${id}`).then((blog: Iblogs) => {
 			setContent(blog.content);
 			setTitle(blog.title);
+
+			const blogTags: MultiValue<Option> = blog.tags.map((tag: Itags) => ({
+				value: tag.id,
+				label: tag.name,
+			}));
+
+			setTags(blogTags);
 		});
-		GET<Itags[]>("/api/tags").then((tags) => {
-			setOptions(tags.map((tag) => ({ value: tag.id, label: tag.name })));
+
+		GET<Itags[]>("/api/tags").then((allTags) => {
+			const tagOptions: MultiValue<Option> = allTags.map((tag: Itags) => ({
+				value: tag.id,
+				label: tag.name,
+			}));
+			setOptions(tagOptions);
 		});
 	}, []);
+
+	const deleteBlog = () => {
+		DELETE(`/api/blogs/${id}`).then(() => {
+			nav("/api/blogs");
+		});
+	};
 
 	return (
 		<div className="container">
@@ -44,7 +61,16 @@ const EditBlog = () => {
 							Tags
 						</label>
 
-						<Select value={tags} onChange={setTags} options={options} isMulti className="basic-multi-select mb-3" classNamePrefix="select" required />
+						<Select
+							value={tags}
+							components={animatedComponents}
+							onChange={(newTags) => setTags(newTags)}
+							options={options}
+							isMulti
+							className="basic-multi-select mb-3"
+							classNamePrefix="select"
+							required
+						/>
 					</div>
 					<div className="mb-3">
 						<label htmlFor="content" className="form-label fw-bold">
@@ -53,7 +79,9 @@ const EditBlog = () => {
 						<textarea value={content} onChange={(e) => setContent(e.target.value)} className="form-control large-textarea" required></textarea>
 					</div>
 					<button className="btn btn-info">Save</button>
-					<button className="btn btn-danger m-4">Delete</button>
+					<button className="btn btn-danger m-4" onClick={() => deleteBlog}>
+						Delete
+					</button>
 				</div>
 			</div>
 		</div>

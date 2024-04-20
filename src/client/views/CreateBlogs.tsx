@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { GET } from "../services/fetchHelper";
 import Select, { MultiValue } from "react-select";
+import makeAnimated from "react-select/animated";
 import type { Itags } from "../types";
 
-interface Option {
-	value: number;
-	label: string;
-}
+interface Option {}
 
 const CreateBlogs = () => {
 	const [tags, setTags] = useState<MultiValue<Option>>([]);
 	const [options, setOptions] = useState<MultiValue<Option>>([]);
+	const animatedComponents = makeAnimated();
 
 	useEffect(() => {
 		GET<Itags[]>("/api/tags").then((tags) => {
@@ -34,13 +33,13 @@ const CreateBlogs = () => {
 							Tags
 						</label>
 
-						<Select value={tags} onChange={setTags} options={options} isMulti className="basic-multi-select mb-3" classNamePrefix="select" required />
+						<Select value={tags} components={animatedComponents} onChange={setTags} options={options} isMulti className="basic-multi-select mb-3" classNamePrefix="select" required />
 					</div>
 					<div className="mb-3">
-						<label htmlFor="content" className="form-label fw-bold">
+						<label htmlFor="content" className="form-label fw-bold ">
 							Content
 						</label>
-						<textarea className="form-control" required></textarea>
+						<textarea className="form-control large-textarea" required></textarea>
 					</div>
 					<button type="submit" className="btn btn-info">
 						Submit

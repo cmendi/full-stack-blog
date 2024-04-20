@@ -1,6 +1,6 @@
 import express from "express";
 import db from "../db";
-import { IBaseBlogs } from "../types";
+import { IBaseBlogs, Tag } from "../types";
 
 const blogsRouter = express.Router();
 
@@ -8,7 +8,27 @@ const blogsRouter = express.Router();
 blogsRouter.get("/", async (req, res) => {
 	try {
 		const blogs = await db.blogs.getAll();
-		res.json(blogs);
+		const clean_blogs = blogs.map((blog) => {
+			let tags: Tag[] = [];
+			if (blog.tagids) {
+				const tag_ids = blog.tagids.split(",").map((id) => Number(id));
+				const tag_names = blog.tagname!.split(",");
+
+				tag_ids.forEach((tag_id, index) => {
+					tags.push({ id: tag_id, name: tag_names[index] });
+				});
+				delete blog.tagids;
+				delete blog.tagname;
+			} else {
+				tags = [];
+			}
+
+			return {
+				...blog,
+				tags,
+			};
+		});
+		res.json(clean_blogs);
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ message: "Cannot recieve all blogs" });
@@ -17,11 +37,26 @@ blogsRouter.get("/", async (req, res) => {
 
 // Get one blog
 blogsRouter.get("/:id", async (req, res) => {
-	const id = parseInt(req.params.id);
-
 	try {
+		const id = Number(req.params.id);
 		const [blog] = await db.blogs.getOne(id);
-		res.json(blog);
+
+		let tags: Tag[] = [];
+
+		if (blog.tagids) {
+			const tag_ids = blog.tagids.split(",").map((id) => Number(id));
+
+			if (!blog.tagname) return;
+			const tag_names = blog.tagname!.split(",");
+
+			tag_ids.forEach((tag_id, index) => {
+				tags.push({ id: tag_id, name: tag_names[index] });
+			});
+			delete blog.tagids;
+			delete blog.tagname;
+		}
+
+		res.json({ ...blog, tags });
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ message: "Cannot recieve blog with that id" });

@@ -33,19 +33,18 @@ const Admin = () => {
 	// Display Tags.
 	const getTags = (blogId: number) => {
 		const blogTag = blogTags.filter((blogTag) => blogTag.blog_id === blogId);
-		const tagsForBlog: JSX.Element[] = [];
-		blogTag.forEach((tag) => {
-			const tagObject = tags.find((t) => t.id === tag.tag_id);
-			if (tagObject) {
-				tagsForBlog.push(
-					<span key={`tag-object-${tagObject.id}`} className="bg-info shadow shadow-sm rounded-pill p-2 m-2 fw-bold">
+		const tagsForBlog = blogTag
+			.map((tag) => {
+				const tagObject = tags.find((t) => t.id === tag.tag_id);
+				return tagObject ? (
+					<span key={`tag-object-${tagObject.id}`} className="blog-tags bg-secondary shadow shadow-sm rounded-pill px-2 py-1 m-1 fw-bold">
 						{tagObject.name}
 					</span>
-				);
-			}
-		});
+				) : null;
+			})
+			.filter((tag) => tag !== null);
 
-		return tagsForBlog;
+		return tagsForBlog.length > 0 ? tagsForBlog : null;
 	};
 
 	// Toggle read more for a specific blog
@@ -81,7 +80,8 @@ const Admin = () => {
 									<h6 className="card-subtitle mb-2 m-4">
 										by {getAuthor(blog.author_id)} on {new Date(blog.created_at).toLocaleString()}
 									</h6>
-									<div className="card-subtitle mb-2 m-4 d-flex flex-wrap align-items-center">Tags: {getTags(blog.id)}</div>
+									{getTags(blog.id) && <div className="card-subtitle mb-2 m-4 d-flex flex-wrap align-items-center">{getTags(blog.id)}</div>}
+
 									<button onClick={() => deleteBlog(blog.id)} className="btn btn-danger m-4 fw-bold">
 										Delete
 									</button>
