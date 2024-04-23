@@ -1,6 +1,5 @@
 import express from "express";
 import db from "../db";
-import { IBlogTags } from "../types";
 
 const blogTagsRouter = express.Router();
 

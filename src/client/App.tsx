@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Admin from "./views/Admin";
 import EditBlog from "./views/EditBlog";
+import OneBlog from "./views/OneBlog";
 
 const App = () => {
 	return (
@@ -14,6 +15,7 @@ const App = () => {
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/blogs/new" element={<CreateBlogs />} />
+				<Route path="/blogs/:id" element={<OneBlog />} />
 				<Route path="/blogs/:id/edit" element={<EditBlog />} />
 				<Route path="/admin" element={<Admin />} />
 			</Routes>

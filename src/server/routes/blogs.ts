@@ -65,7 +65,7 @@ blogsRouter.get("/:id", async (req, res) => {
 
 // Create blog
 blogsRouter.post("/", async (req, res) => {
-	const { title, content, tag_ids } = req.body;
+	const { title, content, tags } = req.body;
 
 	if (!title || typeof title !== "string" || title.length > 150) {
 		return res.status(400).json({ message: "Title must be a string no longer than 150 characters" });
@@ -85,8 +85,8 @@ blogsRouter.post("/", async (req, res) => {
 		const blog = await db.blogs.create(newBlog);
 		const blog_id = blog.insertId;
 
-		if (tag_ids || Array.isArray(tag_ids)) {
-			for await (const tag_id of tag_ids) {
+		if (tags || Array.isArray(tags)) {
+			for await (const tag_id of tags) {
 				await db.blogtags.create({ tag_id, blog_id });
 			}
 		}

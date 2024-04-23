@@ -1,19 +1,18 @@
 export type SupportMethods = "GET" | "PUT" | "POST" | "DELETE";
 
 export interface Itags {
-	tag_id: number;
 	id: number;
 	name: string;
 }
 
 export interface Iblogs {
 	id: number;
+	name: string;
 	title: string;
-	tagname: string;
 	author_id: number;
 	content: string;
 	created_at: Date;
-	tags: [];
+	tags: Itags[];
 }
 
 export interface Iauthors {

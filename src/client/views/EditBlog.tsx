@@ -22,7 +22,7 @@ const EditBlog = () => {
 			setContent(blog.content);
 			setTitle(blog.title);
 
-			const blogTags: MultiValue<Option> = blog.tags.map((tag: Itags) => ({
+			const blogTags: MultiValue<Option> = blog.tags.map((tag) => ({
 				value: tag.id,
 				label: tag.name,
 			}));
@@ -41,7 +41,7 @@ const EditBlog = () => {
 
 	const deleteBlog = () => {
 		DELETE(`/api/blogs/${id}`).then(() => {
-			nav("/api/blogs");
+			nav("/");
 		});
 	};
 
@@ -79,7 +79,7 @@ const EditBlog = () => {
 						<textarea value={content} onChange={(e) => setContent(e.target.value)} className="form-control large-textarea" required></textarea>
 					</div>
 					<button className="btn btn-info">Save</button>
-					<button className="btn btn-danger m-4" onClick={() => deleteBlog}>
+					<button className="btn btn-danger m-4" onClick={deleteBlog}>
 						Delete
 					</button>
 				</div>

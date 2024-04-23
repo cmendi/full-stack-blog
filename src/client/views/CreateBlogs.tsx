@@ -1,21 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { GET } from "../services/fetchHelper";
+import { GET, POST } from "../services/fetchHelper";
 import Select, { MultiValue } from "react-select";
 import makeAnimated from "react-select/animated";
+import { useNavigate } from "react-router-dom";
 import type { Itags } from "../types";
 
-interface Option {}
+interface Option {
+	value: number;
+	label: string;
+}
 
 const CreateBlogs = () => {
 	const [tags, setTags] = useState<MultiValue<Option>>([]);
 	const [options, setOptions] = useState<MultiValue<Option>>([]);
+	const [title, setTitle] = useState("");
+	const [content, setContent] = useState("");
+
 	const animatedComponents = makeAnimated();
+	const nav = useNavigate();
 
 	useEffect(() => {
 		GET<Itags[]>("/api/tags").then((tags) => {
 			setOptions(tags.map((tag) => ({ value: tag.id, label: tag.name })));
 		});
 	}, []);
+
+	const handleSubmit = () => {
+		const tagIds = tags.map((tag) => tag.value);
+		POST("/api/blogs", { title, tagIds, content }).then((blog) => {
+			nav(`/blogs/${blog.id}`);
+		});
+	};
 
 	return (
 		<div className="container">
@@ -26,7 +41,7 @@ const CreateBlogs = () => {
 						<label htmlFor="title" className="form-label fw-bold">
 							Title
 						</label>
-						<input className="form-control" required />
+						<input className="form-control" onChange={(e) => setTitle(e.target.value)} required />
 					</div>
 					<div className="mb-3">
 						<label htmlFor="title" className="form-label fw-bold">
@@ -39,9 +54,9 @@ const CreateBlogs = () => {
 						<label htmlFor="content" className="form-label fw-bold ">
 							Content
 						</label>
-						<textarea className="form-control large-textarea" required></textarea>
+						<textarea className="form-control large-textarea" onChange={(e) => setContent(e.target.value)} required></textarea>
 					</div>
-					<button type="submit" className="btn btn-info">
+					<button type="submit" onClick={handleSubmit} className="btn btn-info">
 						Submit
 					</button>
 				</div>
