@@ -100,7 +100,7 @@ blogsRouter.post("/", async (req, res) => {
 
 //Update blog
 blogsRouter.put("/:id", async (req, res) => {
-	const { title, content, tag_ids } = req.body;
+	const { title, content, tags } = req.body;
 	const id = parseInt(req.params.id);
 
 	try {
@@ -110,9 +110,9 @@ blogsRouter.put("/:id", async (req, res) => {
 			author_id: 1,
 		};
 
-		if (tag_ids || Array.isArray(tag_ids)) {
+		if (tags || Array.isArray(tags)) {
 			await db.blogtags.destroy_by("blog_id", id);
-			for await (const tag_id of tag_ids) {
+			for await (const tag_id of tags) {
 				await db.blogtags.create({ tag_id, blog_id: id });
 			}
 		}

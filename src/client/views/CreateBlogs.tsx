@@ -27,7 +27,7 @@ const CreateBlogs = () => {
 
 	const handleSubmit = () => {
 		const tagIds = tags.map((tag) => tag.value);
-		POST("/api/blogs", { title, tagIds, content }).then((blog) => {
+		POST("/api/blogs", { title, content, tags: tagIds }).then((blog) => {
 			nav(`/blogs/${blog.id}`);
 		});
 	};

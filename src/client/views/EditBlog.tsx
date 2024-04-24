@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { GET, DELETE } from "../services/fetchHelper";
+import { GET, DELETE, PUT } from "../services/fetchHelper";
 import Select, { MultiValue } from "react-select";
 import makeAnimated from "react-select/animated";
 import { useParams, useNavigate } from "react-router-dom";
 import { Itags, Iblogs } from "../types";
 
-interface Option {}
+interface Option {
+	value: number;
+	label: string;
+}
 
 const EditBlog = () => {
 	const { id } = useParams<{ id: string }>();
@@ -38,6 +41,14 @@ const EditBlog = () => {
 			setOptions(tagOptions);
 		});
 	}, []);
+
+	const handSubmit = () => {
+		const tagIds = tags.map((tag) => tag.value);
+		console.log(tagIds);
+		PUT(`/api/blogs/${id}`, { title, content, tags: tagIds }).then(() => {
+			nav(`/blogs/${id}`);
+		});
+	};
 
 	const deleteBlog = () => {
 		DELETE(`/api/blogs/${id}`).then(() => {
@@ -78,7 +89,9 @@ const EditBlog = () => {
 						</label>
 						<textarea value={content} onChange={(e) => setContent(e.target.value)} className="form-control large-textarea" required></textarea>
 					</div>
-					<button className="btn btn-info">Save</button>
+					<button className="btn btn-info" onClick={handSubmit}>
+						Save
+					</button>
 					<button className="btn btn-danger m-4" onClick={deleteBlog}>
 						Delete
 					</button>
