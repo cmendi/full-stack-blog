@@ -31,6 +31,9 @@ const Navbar = () => {
 						<Link to={"/admin"} onClick={handleNavLinkClick} className="text-center text-info nav-link m-2 fw-bold">
 							Admin
 						</Link>
+						<Link to={"/contact"} onClick={handleNavLinkClick} className="text-center text-info nav-link m-2 fw-bold">
+							Contact
+						</Link>
 					</div>
 				</div>
 			</nav>

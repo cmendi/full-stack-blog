@@ -16,14 +16,14 @@ function fetcher<T = any>(url: string, method: SupportMethods, rawData?: unknown
 	return new Promise<T>(async (resolve, reject) => {
 		try {
 			const res = await fetch(process.env.SERVER_URL + url, options);
-			const data = await res.json();
+			const alertData = await res.json();
 			if (res.ok) {
-				resolve(data);
+				resolve(alertData);
 
-				if (data.message) {
+				if (alertData.message) {
 					Alert.fire({
 						icon: "success",
-						text: data.message,
+						text: alertData.message,
 						timer: 5000,
 					});
 				}
@@ -31,11 +31,11 @@ function fetcher<T = any>(url: string, method: SupportMethods, rawData?: unknown
 				Alert.fire({
 					icon: "error",
 					title: "Sever Error",
-					text: data.message,
+					text: alertData.message,
 					timer: 5000,
 				});
-				console.error(data);
-				reject(data);
+				console.error(alertData);
+				reject(alertData);
 			}
 		} catch (error) {
 			const err = error as Error;

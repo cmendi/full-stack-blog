@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import Admin from "./views/Admin";
 import EditBlog from "./views/EditBlog";
 import OneBlog from "./views/OneBlog";
+import Contact from "./views/Contact";
 
 const App = () => {
 	return (
@@ -18,6 +19,7 @@ const App = () => {
 				<Route path="/blogs/:id" element={<OneBlog />} />
 				<Route path="/blogs/:id/edit" element={<EditBlog />} />
 				<Route path="/admin" element={<Admin />} />
+				<Route path="/contact" element={<Contact />} />
 			</Routes>
 			<Footer />
 		</BrowserRouter>
