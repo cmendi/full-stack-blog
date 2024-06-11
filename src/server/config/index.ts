@@ -15,7 +15,12 @@ const mailgun = {
 	toEmail: process.env.MAILGUN_TO_EMAIL as string,
 };
 
+const stripe = {
+	apiKey: process.env.STRIPE_API_KEY as string,
+};
+
 export default {
 	mysql,
 	mailgun,
+	stripe,
 };

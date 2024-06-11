@@ -34,6 +34,9 @@ const Navbar = () => {
 						<Link to={"/contact"} onClick={handleNavLinkClick} className="text-center text-info nav-link m-2 fw-bold">
 							Contact
 						</Link>
+						<Link to={"/donate"} onClick={handleNavLinkClick} className="text-center text-info nav-link m-2 fw-bold">
+							Donate
+						</Link>
 					</div>
 				</div>
 			</nav>

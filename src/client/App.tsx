@@ -8,6 +8,8 @@ import Admin from "./views/Admin";
 import EditBlog from "./views/EditBlog";
 import OneBlog from "./views/OneBlog";
 import Contact from "./views/Contact";
+import Donate from "./views/Donate";
+import Thanks from "./views/Thanks";
 
 const App = () => {
 	return (
@@ -20,6 +22,8 @@ const App = () => {
 				<Route path="/blogs/:id/edit" element={<EditBlog />} />
 				<Route path="/admin" element={<Admin />} />
 				<Route path="/contact" element={<Contact />} />
+				<Route path="/donate" element={<Donate />} />
+				<Route path="/thank-you" element={<Thanks />} />
 			</Routes>
 			<Footer />
 		</BrowserRouter>

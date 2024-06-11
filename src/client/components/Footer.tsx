@@ -20,8 +20,14 @@ const Footer = () => {
 						<Link to={"/blogs/new"} className="nav-link m-2 fw-bold">
 							Create Blogs
 						</Link>
-						<Link to={"/"} className="nav-link m-2 fw-bold">
+						<Link to={"/admin"} className="nav-link m-2 fw-bold">
 							Admin
+						</Link>
+						<Link to={"/contact"} className="nav-link m-2 fw-bold">
+							Contact
+						</Link>
+						<Link to={"/donate"} className="nav-link m-2 fw-bold">
+							donate
 						</Link>
 					</div>
 					<div className="col-12 col-md-4">
