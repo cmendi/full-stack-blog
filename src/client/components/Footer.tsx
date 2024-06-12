@@ -27,7 +27,7 @@ const Footer = () => {
 							Contact
 						</Link>
 						<Link to={"/donate"} className="nav-link m-2 fw-bold">
-							donate
+							Donate
 						</Link>
 					</div>
 					<div className="col-12 col-md-4">
