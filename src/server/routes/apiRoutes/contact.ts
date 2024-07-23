@@ -1,7 +1,7 @@
 import express from "express";
 import Mailgun from "mailgun.js";
 import FormData from "form-data";
-import config from "../config";
+import config from "../../config";
 
 const mailgun = new Mailgun(FormData).client({
 	username: "api",

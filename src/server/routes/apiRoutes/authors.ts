@@ -1,5 +1,5 @@
 import express from "express";
-import db from "../db";
+import db from "../../db";
 
 const authorsRouter = express.Router();
 
@@ -36,9 +36,9 @@ authorsRouter.get("/:id", async (req, res) => {
 
 // Create author
 authorsRouter.post("/", async (req, res) => {
-	const { name, email } = req.body;
+	const { name, email, password } = req.body;
 	try {
-		const results = await db.authors.create({ name, email });
+		const results = await db.authors.create({ name, email, password });
 		return res.status(201).json({ message: "Author created!", id: results.insertId });
 	} catch (error) {
 		console.log(error);

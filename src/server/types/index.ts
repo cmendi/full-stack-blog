@@ -1,6 +1,7 @@
 export interface IBaseAuthors {
 	name: string;
 	email: string;
+	password: string;
 }
 
 export interface IAuthors extends IBaseAuthors {
@@ -37,4 +38,9 @@ export interface IBlogTags {
 export interface Tag {
 	id: number;
 	name: string;
+}
+
+export interface MysqlResponse {
+	affectedRows: number;
+	insertId: number;
 }

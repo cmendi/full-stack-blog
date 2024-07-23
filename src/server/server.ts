@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import indexRouter from "./routes";
+import routes from "./routes";
 
 const isProduction = process.env.NODE_ENV === "production";
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -16,7 +16,7 @@ if (isProduction) {
 	app.use(express.static("public"));
 }
 
-app.use(indexRouter);
+app.use(routes);
 
 // 404 fallback for client side routing
 if (isProduction) {

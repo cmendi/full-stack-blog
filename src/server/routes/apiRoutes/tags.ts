@@ -1,6 +1,6 @@
 import express from "express";
-import db from "../db";
-import { IBaseTags } from "../types";
+import db from "../../db";
+import { IBaseTags } from "../../types";
 
 const tagsRouter = express.Router();
 

@@ -1,6 +1,6 @@
 import express from "express";
-import db from "../db";
-import { IBaseBlogs, Tag } from "../types";
+import db from "../../db";
+import { IBaseBlogs, Tag } from "../../types";
 
 const blogsRouter = express.Router();
 

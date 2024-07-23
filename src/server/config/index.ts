@@ -19,8 +19,13 @@ const stripe = {
 	apiKey: process.env.STRIPE_API_KEY as string,
 };
 
+const jwt = {
+	secret: process.env.JWT_SECRET as string,
+};
+
 export default {
 	mysql,
+	jwt,
 	mailgun,
 	stripe,
 };
