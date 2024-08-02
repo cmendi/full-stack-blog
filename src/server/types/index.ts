@@ -11,7 +11,7 @@ export interface IAuthors extends IBaseAuthors {
 export interface IBaseBlogs {
 	title: string;
 	content: string;
-	author_id: number;
+	author_id?: number;
 }
 
 export interface IBlogsJoined extends IBaseBlogs {
@@ -43,4 +43,15 @@ export interface Tag {
 export interface MysqlResponse {
 	affectedRows: number;
 	insertId: number;
+}
+
+export interface Payload {
+	authorid: number;
+	email: string;
+}
+
+declare global {
+	namespace Express {
+		interface User extends Payload {}
+	}
 }
