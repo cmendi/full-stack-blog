@@ -79,7 +79,7 @@ blogsRouter.post("/", async (req, res) => {
 		const newBlog: IBaseBlogs = {
 			title,
 			content,
-			author_id: 1,
+			author_id: req.user!.authorid,
 		};
 
 		const blog = await db.blogs.create(newBlog);
@@ -107,8 +107,14 @@ blogsRouter.put("/:id", async (req, res) => {
 		const updateBlog: IBaseBlogs = {
 			title,
 			content,
-			author_id: 1,
 		};
+
+		const [blog] = await db.blogs.getOne(id);
+
+		if (blog.author_id !== req.user!.authorid) {
+			res.status(403).json({ message: "Dont touch shit that isnt yours!" });
+			return;
+		}
 
 		if (tags || Array.isArray(tags)) {
 			await db.blogtags.destroy_by("blog_id", id);
@@ -135,7 +141,7 @@ blogsRouter.delete("/:id", async (req, res) => {
 
 	try {
 		await db.blogtags.destroy_by("blog_id", id);
-		await db.blogs.destroy(id);
+		await db.blogs.destroy(id, req.user!.authorid);
 		res.status(200).json({ message: `Successfully deleted blog with the id of ${id}` });
 	} catch (error) {
 		console.log(error);

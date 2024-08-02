@@ -7,7 +7,7 @@ const create = (newAuthors: IBaseAuthors) => Query("INSERT INTO Authors SET ?", 
 const update = (updatedAuthors: IBaseAuthors, id: number) => Query("UPDATE Authors SET ? WHERE id=?", [updatedAuthors, id]);
 const destroy = (id: number) => Query("DELETE FROM Authors WHERE id=?", [id]);
 const find = (column: string, value: string) => Query<IAuthors[]>("SELECT * FROM Authors WHERE ?? = ?", [column, value]);
-const insert = () => Query<MysqlResponse>("");
+const insert = (newAuthor: { email: string; name: string; password: string }) => Query<MysqlResponse>("INSERT INTO Authors SET ?", newAuthor);
 
 export default {
 	getAll,

@@ -21,6 +21,7 @@ const stripe = {
 
 const jwt = {
 	secret: process.env.JWT_SECRET as string,
+	expires: process.env.EXPIRES_TOKEN,
 };
 
 export default {

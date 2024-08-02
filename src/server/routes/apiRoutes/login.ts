@@ -13,7 +13,6 @@ loginRouter.get("/", (req, res) => {
 			res.status(401).json({ message: "unauthorized!" });
 			return;
 		}
-		//Validate token
 		const payload = <{ email: string }>jwt.verify(token, config.jwt.secret);
 		res.json({ message: `You are now logged in as ${payload.email}` });
 	} catch (error) {
