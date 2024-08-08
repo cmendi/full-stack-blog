@@ -13,7 +13,7 @@ registerRouter.post("/", async (req, res) => {
 		newAuthor.password = generateHash(newAuthor.password);
 		const result = await db.authors.insert(newAuthor);
 		const token = jwt.sign({ authorid: result.insertId, email: newAuthor.email }, config.jwt.secret, { expiresIn: config.jwt.expires });
-		res.json(token);
+		res.json({ token });
 	} catch (error) {
 		res.status(500).json({ message: "fix your code, register isnt working!", error });
 	}

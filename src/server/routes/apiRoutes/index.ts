@@ -12,6 +12,7 @@ const apiRouter = express.Router();
 
 apiRouter.use("/authors", authorsRouter);
 apiRouter.use("/blogs", tokenCheck, blogsRouter);
+// apiRouter.use("/blogs", blogsRouter);
 apiRouter.use("/tags", tagsRouter);
 apiRouter.use("/blogtags", blogTagsRouter);
 apiRouter.use("/contact", contactRouter);

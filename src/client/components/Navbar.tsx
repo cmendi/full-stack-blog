@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { GET, tokenKey } from "../services/fetchHelper";
 
 const Navbar = () => {
 	const [isCollapsed, setIsCollapsed] = useState(true);
+	const nav = useNavigate();
+	const loc = useLocation();
 
 	const handleToggleCollapse = () => {
 		setIsCollapsed(!isCollapsed);
@@ -10,6 +13,19 @@ const Navbar = () => {
 	const handleNavLinkClick = () => {
 		setIsCollapsed(true);
 	};
+	const handleLogout = () => {
+		handleNavLinkClick();
+		localStorage.removeItem(tokenKey);
+		setIsLoggedIn(false);
+		nav("/login");
+	};
+
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+	useEffect(() => {
+		GET("/auth/checkem").then(() => setIsLoggedIn(true));
+	}, [loc.pathname]);
+
 	return (
 		<div className="container">
 			<nav className="navbar navbar-expand-md">
@@ -22,21 +38,37 @@ const Navbar = () => {
 
 				<div className={`collapse navbar-collapse ${isCollapsed ? "collapse-transition" : "show collapse-transition"}`}>
 					<div className="navbar-nav">
-						<Link to={"/"} onClick={handleNavLinkClick} className="text-center text-dark nav-link m-2 fw-bold">
-							Home
-						</Link>
-						<Link to={"/blogs/new"} onClick={handleNavLinkClick} className="text-center text-info text-nowrap nav-link m-2 fw-bold">
-							Create Blogs
-						</Link>
-						<Link to={"/admin"} onClick={handleNavLinkClick} className="text-center text-info nav-link m-2 fw-bold">
-							Admin
-						</Link>
+						{isLoggedIn && (
+							<Link to={"/"} onClick={handleNavLinkClick} className="text-center text-dark nav-link m-2 fw-bold">
+								Home
+							</Link>
+						)}
+						{isLoggedIn && (
+							<Link to={"/blogs/new"} onClick={handleNavLinkClick} className="text-center text-info text-nowrap nav-link m-2 fw-bold">
+								Create Blogs
+							</Link>
+						)}
+						{isLoggedIn && (
+							<Link to={"/admin"} onClick={handleNavLinkClick} className="text-center text-info nav-link m-2 fw-bold">
+								Admin
+							</Link>
+						)}
 						<Link to={"/contact"} onClick={handleNavLinkClick} className="text-center text-info nav-link m-2 fw-bold">
 							Contact
 						</Link>
 						<Link to={"/donate"} onClick={handleNavLinkClick} className="text-center text-info nav-link m-2 fw-bold">
 							Donate
 						</Link>
+						{!isLoggedIn && (
+							<Link to={"/login"} onClick={handleNavLinkClick} className="text-center text-info nav-link m-2 fw-bold">
+								Login
+							</Link>
+						)}
+						{isLoggedIn && (
+							<button onClick={handleLogout} className="text-center text-info nav-link m-2 fw-bold">
+								Logout
+							</button>
+						)}
 					</div>
 				</div>
 			</nav>

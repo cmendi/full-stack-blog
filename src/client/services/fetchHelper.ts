@@ -1,6 +1,6 @@
 import { SupportMethods } from "../types";
 import Alert from "sweetalert2";
-
+export const tokenKey = "token";
 function fetcher<T = any>(url: string, method: SupportMethods, rawData?: unknown) {
 	const headers: HeadersInit = {};
 	const options: RequestInit = {
@@ -11,6 +11,12 @@ function fetcher<T = any>(url: string, method: SupportMethods, rawData?: unknown
 	if (method === "POST" || method === "PUT") {
 		headers["Content-Type"] = "application/json";
 		options["body"] = JSON.stringify(rawData);
+	}
+
+	const TOKEN = localStorage.getItem(tokenKey);
+
+	if (TOKEN) {
+		headers["Authorization"] = `Bearer ${TOKEN}`;
 	}
 
 	return new Promise<T>(async (resolve, reject) => {
@@ -28,13 +34,16 @@ function fetcher<T = any>(url: string, method: SupportMethods, rawData?: unknown
 					});
 				}
 			} else {
+				console.error(alertData);
+				if (url === "/auth/checkem") {
+					return reject(alertData);
+				}
 				Alert.fire({
 					icon: "error",
 					title: "Sever Error",
 					text: alertData.message,
 					timer: 5000,
 				});
-				console.error(alertData);
 				reject(alertData);
 			}
 		} catch (error) {

@@ -12,7 +12,7 @@ loginRouter.post("/", passport.authenticate("local", { session: false }), async 
 
 	try {
 		const token = jwt.sign({ authorid: req.user.authorid, email: req.user.email }, config.jwt.secret, { expiresIn: config.jwt.expires });
-		res.json(token);
+		res.json({ token });
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ message: "fix your code, login isnt working!", error });
